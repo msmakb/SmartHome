@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Index{% endblock title %}
+{% block content %}
+<div class="container mt-4">
+    <form method="post">
+        {% csrf_token %}
+        <h1 class="text-center">LED</h1>
+        <div class="row m-2 p-2">
+            <button type="submit" name="ON" class="btn btn-lg btn-success">On</button>
+        </div>
+        <div class="row m-2 p-2">
+            <button type="submit" name="OFF" class="btn btn-lg btn-secondary">Off</button>
+        </div>
+        <div class="row m-2 p-2">
+            <button type="submit" name="BLINK" class="btn btn-lg btn-info">Blink</button>
+        </div>
+    </form>
+</div>
+<script>
+    console.log(localStorage.getItem('home_secrt_key'));
+</script>
+{% endblock content %}
