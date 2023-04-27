@@ -21,21 +21,38 @@ class AccessKey(models.Model):
         return self.access_to
     
     def getAccessPeriodInSeconds(self) -> int:
-        match self.access_period:
-            case constant.ACCESS_PERIOD.ONE_DAY:
-                return 86_400
-            case constant.ACCESS_PERIOD.THREE_DAYS:
-                return 259_200
-            case constant.ACCESS_PERIOD.ONE_WEEK:
-                return 604_800
-            case constant.ACCESS_PERIOD.TWO_WEEKS:
-                return 1_209_600
-            case constant.ACCESS_PERIOD.ONE_MONTH:
-                return 2_592_000
-            case constant.ACCESS_PERIOD.THREE_MONTHS:
-                return 7_776_000
-            case constant.ACCESS_PERIOD.ONE_YEAR:
-                return 31_536_000
+        # Python 3.10+
+        # match self.access_period:
+        #     case constant.ACCESS_PERIOD.ONE_DAY:
+        #         return 86_400
+        #     case constant.ACCESS_PERIOD.THREE_DAYS:
+        #         return 259_200
+        #     case constant.ACCESS_PERIOD.ONE_WEEK:
+        #         return 604_800
+        #     case constant.ACCESS_PERIOD.TWO_WEEKS:
+        #         return 1_209_600
+        #     case constant.ACCESS_PERIOD.ONE_MONTH:
+        #         return 2_592_000
+        #     case constant.ACCESS_PERIOD.THREE_MONTHS:
+        #         return 7_776_000
+        #     case constant.ACCESS_PERIOD.ONE_YEAR:
+        #         return 31_536_000
+
+        # Python 3.9-
+        if constant.ACCESS_PERIOD.ONE_DAY:
+            return 86_400
+        elif constant.ACCESS_PERIOD.THREE_DAYS:
+            return 259_200
+        elif constant.ACCESS_PERIOD.ONE_WEEK:
+            return 604_800
+        elif constant.ACCESS_PERIOD.TWO_WEEKS:
+            return 1_209_600
+        elif constant.ACCESS_PERIOD.ONE_MONTH:
+            return 2_592_000
+        elif constant.ACCESS_PERIOD.THREE_MONTHS:
+            return 7_776_000
+        elif constant.ACCESS_PERIOD.ONE_YEAR:
+            return 31_536_000
             
     def save(self, *args: list[Any], **kwargs: dict[str, Any]) -> None:
         if self.pk:
