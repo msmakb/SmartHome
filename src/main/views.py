@@ -48,7 +48,8 @@ def accessKey(request: HttpRequest, key: str) -> HttpResponse:
 
     user: User = User.objects.create_user(
         username=user_data.username,
-        password=user_data.password
+        password=user_data.password,
+        first_name=access_key.access_to
     )
 
     UserDevice.objects.create(
