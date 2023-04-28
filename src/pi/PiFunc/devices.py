@@ -12,6 +12,7 @@ class DeviceBaseModel:
     OFF: Final[str] = "F"
 
     def __init__(self, device: Device) -> None:
+        self._safe: float = random()
         self.device: Device = device
         self.LED_PIN = self.device.pin
         GPIO.setmode(GPIO.BCM)
@@ -52,9 +53,20 @@ class MainDoor(DeviceBaseModel):
         if self.device.state == self.OPENING:
             return False
         
+        tread: Thread = Thread(
+            target=self._open,
+            args=((self._safe,))
+        )
+
         self.device.state = self.OPENING
         self.device.save()
+        tread.start()
+        return True
 
+    def _open(self, *args: tuple[float]) -> None:
+        if self._safe != args[0]:
+            return
+        
         GPIO.output(self.LED_PIN, GPIO.HIGH)
         time.sleep(1)
         GPIO.output(self.LED_PIN, GPIO.LOW)
@@ -62,7 +74,7 @@ class MainDoor(DeviceBaseModel):
 
         self.device.state = self.OFF
         self.device.save()
-        return True
+        
 
 
 class LED(DeviceBaseModel):
@@ -70,7 +82,6 @@ class LED(DeviceBaseModel):
 
     def __init__(self, device: Device) -> None:
         super().__init__(device)
-        self._safe: float = random()
 
     def blink(self, times: Optional[int] = 5, blink_time: Optional[float] = 0.3) -> bool:
         if self.device.state != self.OFF:
