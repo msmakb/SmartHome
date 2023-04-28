@@ -25,7 +25,6 @@ def index(request: HttpRequest) -> HttpResponse:
             device: Device = Device.objects.get(name='Main Door')
             main_door: MainDoor = MainDoor(device)
             main_door.open()
-            main_door.cleanup()
             user_device.logActivity(
                 constant.ACTIVITY_LOG.OPEN_MAIN_GATE)
 

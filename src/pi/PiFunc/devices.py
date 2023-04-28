@@ -14,15 +14,15 @@ class DeviceBaseModel:
     def __init__(self, device: Device) -> None:
         self._safe: float = random()
         self.device: Device = device
-        self.LED_PIN = self.device.pin
+        self.DEVICE_PIN = self.device.pin
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.LED_PIN, GPIO.OUT)
+        GPIO.setup(self.DEVICE_PIN, GPIO.OUT)
 
     def on(self) -> bool:
         if self.device.state != self.OFF:
             return False
         
-        GPIO.output(self.LED_PIN, GPIO.HIGH)
+        GPIO.output(self.DEVICE_PIN, GPIO.HIGH)
         time.sleep(0.1)
         self.device.state = self.ON
         self.device.save()
@@ -32,7 +32,7 @@ class DeviceBaseModel:
         if self.device.state != self.ON:
             return False
 
-        GPIO.output(self.LED_PIN, GPIO.LOW)
+        GPIO.output(self.DEVICE_PIN, GPIO.LOW)
         time.sleep(0.1)
         self.device.state = self.OFF
         self.device.save()
@@ -67,10 +67,11 @@ class MainDoor(DeviceBaseModel):
         if self._safe != args[0]:
             return
         
-        GPIO.output(self.LED_PIN, GPIO.HIGH)
+        GPIO.output(self.DEVICE_PIN, GPIO.HIGH)
         time.sleep(1)
-        GPIO.output(self.LED_PIN, GPIO.LOW)
+        GPIO.output(self.DEVICE_PIN, GPIO.LOW)
         time.sleep(0.1)
+        self.cleanup()
 
         self.device.state = self.OFF
         self.device.save()
@@ -105,9 +106,9 @@ class LED(DeviceBaseModel):
             return
 
         for _ in range(times):
-            GPIO.output(self.LED_PIN, GPIO.HIGH)
+            GPIO.output(self.DEVICE_PIN, GPIO.HIGH)
             time.sleep(blink_time)
-            GPIO.output(self.LED_PIN, GPIO.LOW)
+            GPIO.output(self.DEVICE_PIN, GPIO.LOW)
             time.sleep(blink_time)
 
         GPIO.cleanup()
