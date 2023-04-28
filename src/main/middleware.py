@@ -1,3 +1,4 @@
+from logging import getLogger, Logger
 from typing import Callable
 
 
@@ -11,6 +12,7 @@ from . import constant
 from .models import UserDevice
 from .util import getClientIp
 
+logger: Logger = getLogger(constant.LOGGERS.MIDDLEWARE)
 
 class AllowedUserMiddleware:
     def __init__(self, get_response) -> None:
@@ -19,6 +21,7 @@ class AllowedUserMiddleware:
     def __call__(self, request: HttpRequest) -> HttpResponse:
         response: HttpResponse = self.get_response(request)
         path_name: str = resolve(request.path_info).url_name
+        logger.info("Client IP: " + getClientIp(request))
         
         if getClientIp(request) in settings.ALLOWED_HOSTS:
             return response

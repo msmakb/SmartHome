@@ -1,6 +1,11 @@
+from pathlib import Path
 from typing import Final
 from collections import namedtuple as _NT
 
+# ------------------------------------ private ------------------------------------ #
+_base_dir: Final[Path] = Path(__file__).resolve().parent.parent
+
+# ---------------------------------- public --------------------------------------- #
 UNSPECIFIED: Final[str] = 'UNSPECIFIED'
 ACCESS_KEY_EXPIRE_MINUTES: Final[int] = 60
 
@@ -27,6 +32,16 @@ ACTIVITY_LOG = _NT('str', [
 ])(
     'Activate access toke',
     'Open main gate',
+)
+
+LOGGERS = _NT('str', [
+    'MAIN',
+    'MIDDLEWARE',
+    'MODELS',
+])(
+    'SmartHome.Main',
+    'SmartHome.Middleware',
+    'SmartHome.Models',
 )
 
 CHOICES = _NT('str', [
